@@ -15,6 +15,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
      */
     public JFramePrincipal() {
         initComponents();
+        
     }
 
     /**
@@ -183,6 +184,11 @@ public class JFramePrincipal extends javax.swing.JFrame {
                 "Nombre", "Radio km", "Distancia media planeta", "Período orbital", "Temperatura media", "Tipo de cuerpo", "Fecha creación"
             }
         ));
+        jTable2.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                jTable2VetoableChange(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
 
         jLabel24.setText("Sol");
@@ -249,7 +255,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
                                             .addComponent(jLabel_planeta_fechC, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addContainerGap())
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addComponent(jLabel15)
@@ -289,9 +295,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
                                     .addComponent(jLabel20)
                                     .addComponent(jLabel_planeta_temperatura))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel21)
-                                    .addComponent(jLabel_planeta_tipo))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel_planeta_tipo, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel21))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel22)
@@ -342,7 +348,47 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
+        //Crear objeto conexión
+        Conexionbbdd conexion = new Conexionbbdd();
+        //LLamar a los metodos de la conexion y guardamos el array
+        String seleccionado = jComboBox1.getSelectedItem()+"";
+        String[] datos =conexion.conectarConsultarMarte();
+        switch (seleccionado){
+            case "Marte":
+                datos = conexion.conectarConsultarMarte();
+            break;
+            case "Mercurio":
+                datos = conexion.conectarConsultarMercurio();
+            break;
+            case "Venus":
+                datos = conexion.conectarConsultarVenus();
+            break;
+            case "Tierra":
+                datos = conexion.conectarConsultarTierra();
+            break;
+            case "Júpiter":
+                datos = conexion.conectarConsultarJupiter();
+            break;
+            case "Saturno":
+                datos = conexion.conectarConsultarSaturno();
+            break;
+            case "Neptuno":
+                datos = conexion.conectarConsultarNeptuno();
+            break;
+        }
+        
+        jLabel_planeta_radio.setText(datos[0]);
+        jLabel_planeta_distancia.setText(datos[1]);
+        jLabel_planeta_período.setText(datos[2]);
+        jLabel_planeta_temperatura.setText(datos[3]);
+        jLabel_planeta_tipo.setText(datos[4]);
+        jLabel_planeta_numeroS.setText(datos[5]);
+        jLabel_planeta_fechC.setText(datos[6]);
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTable2VetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_jTable2VetoableChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable2VetoableChange
 
     /**
      * @param args the command line arguments
