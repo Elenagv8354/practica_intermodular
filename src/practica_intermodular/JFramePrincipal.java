@@ -4,6 +4,14 @@
  */
 package practica_intermodular;
 
+import java.beans.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -15,8 +23,10 @@ public class JFramePrincipal extends javax.swing.JFrame {
      */
     public JFramePrincipal() {
         initComponents();
-        
+
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,7 +72,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jLabel_planeta_numeroS = new javax.swing.JLabel();
         jLabel_planeta_fechC = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tb_satelites = new javax.swing.JTable();
         jLabel24 = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -173,23 +183,20 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         jLabel_planeta_fechC.setText("----");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tb_satelites.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Nombre", "Radio km", "Distancia media planeta", "Período orbital", "Temperatura media", "Tipo de cuerpo", "Fecha creación"
             }
         ));
-        jTable2.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+        tb_satelites.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
             public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
-                jTable2VetoableChange(evt);
+                tb_satelitesVetoableChange(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tb_satelites);
 
         jLabel24.setText("Sol");
 
@@ -245,15 +252,15 @@ public class JFramePrincipal extends javax.swing.JFrame {
                                             .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(27, 27, 27)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel_planeta_distancia, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel_planeta_radio, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel_planeta_período, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel_planeta_temperatura, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel_planeta_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel_planeta_numeroS, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel_planeta_fechC, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addContainerGap())
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jLabel_planeta_numeroS, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel_planeta_radio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel_planeta_distancia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel_planeta_período, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel_planeta_temperatura, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel_planeta_tipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jLabel_planeta_fechC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap(450, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,30 +359,9 @@ public class JFramePrincipal extends javax.swing.JFrame {
         Conexionbbdd conexion = new Conexionbbdd();
         //LLamar a los metodos de la conexion y guardamos el array
         String seleccionado = jComboBox1.getSelectedItem()+"";
-        String[] datos =conexion.conectarConsultarMarte();
-        switch (seleccionado){
-            case "Marte":
-                datos = conexion.conectarConsultarMarte();
-            break;
-            case "Mercurio":
-                datos = conexion.conectarConsultarMercurio();
-            break;
-            case "Venus":
-                datos = conexion.conectarConsultarVenus();
-            break;
-            case "Tierra":
-                datos = conexion.conectarConsultarTierra();
-            break;
-            case "Júpiter":
-                datos = conexion.conectarConsultarJupiter();
-            break;
-            case "Saturno":
-                datos = conexion.conectarConsultarSaturno();
-            break;
-            case "Neptuno":
-                datos = conexion.conectarConsultarNeptuno();
-            break;
-        }
+        String[] datos =conexion.conectarConsultarPlaneta(seleccionado);
+      
+        conectarConsultarSatelites(seleccionado,tb_satelites);
         
         jLabel_planeta_radio.setText(datos[0]);
         jLabel_planeta_distancia.setText(datos[1]);
@@ -385,10 +371,57 @@ public class JFramePrincipal extends javax.swing.JFrame {
         jLabel_planeta_numeroS.setText(datos[5]);
         jLabel_planeta_fechC.setText(datos[6]);
     }//GEN-LAST:event_jComboBox1ActionPerformed
+    public void conectarConsultarSatelites(String planeta, JTable tb_satelites) {
+    String sqlSatelites = "select * from satelite s join planeta p on s.planeta_id = p.id where p.nombre = '"+planeta+"'";
+    try {
+        String url = "jdbc:mysql://localhost:3306/practica_intermodular";
+        String usuario = "root";
+        String contraseña = "Med@c";
+        Connection conexion8 = DriverManager.getConnection(url, usuario, contraseña);
+        java.sql.Statement statement = conexion8.createStatement();
+        ResultSet resultadosSatelites = statement.executeQuery(sqlSatelites);
 
-    private void jTable2VetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_jTable2VetoableChange
+        // Crear el modelo de la tabla
+        DefaultTableModel model = new DefaultTableModel();
+        // Agregar columnas al modelo
+        model.addColumn("Nombre");
+        model.addColumn("Radio");
+        model.addColumn("Distancia Media Planeta");
+        model.addColumn("Periodo Orbital");
+        model.addColumn("Temperatura Media");
+        model.addColumn("Tipo Cuerpo");
+        model.addColumn("Fecha Creacion");
+
+        // Rellenar el modelo de la tabla con los datos del ResultSet
+        while (resultadosSatelites.next()) {
+            model.addRow(new Object[]{
+                resultadosSatelites.getString("nombre"),
+                resultadosSatelites.getString("radio"),
+                resultadosSatelites.getString("distancia_media_planeta"),
+                resultadosSatelites.getString("periodo_orbital"),
+                resultadosSatelites.getString("temperatura_media"),
+                resultadosSatelites.getString("tipo_cuerpo"),
+                resultadosSatelites.getString("fecha_creacion")
+            });
+        }
+
+        // Asignar el modelo a la JTable
+        tb_satelites.setModel(model);
+
+        // Cerrar ResultSet y Statement
+        resultadosSatelites.close();
+        statement.close();
+        conexion8.close();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+    
+    private void tb_satelitesVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_tb_satelitesVetoableChange
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable2VetoableChange
+    }//GEN-LAST:event_tb_satelitesVetoableChange
 
     /**
      * @param args the command line arguments
@@ -425,6 +458,7 @@ public class JFramePrincipal extends javax.swing.JFrame {
         });
     }
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
@@ -462,6 +496,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tb_satelites;
     // End of variables declaration//GEN-END:variables
 }
